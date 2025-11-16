@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { FormEvent, memo, useState } from "react";
 
 const QuizForm = () => {
   const [answer, setAnswer] = useState("");
@@ -11,7 +11,7 @@ const QuizForm = () => {
     return <h1>That&apos;s right!</h1>;
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
 
@@ -24,7 +24,7 @@ const QuizForm = () => {
     }
   }
 
-  function handleTextareaChange(e) {
+  function handleTextareaChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setAnswer(e.target.value);
   }
 
