@@ -4,7 +4,7 @@ import { FormEvent, memo, useState } from "react";
 
 const QuizForm = () => {
   const [answer, setAnswer] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
   const [status, setStatus] = useState("typing");
 
   if (status === "success") {
@@ -20,7 +20,11 @@ const QuizForm = () => {
       setStatus("success");
     } catch (err) {
       setStatus("typing");
-      setError(err);
+      if (err instanceof Error) {
+        setError(err);
+      } else {
+        setError(new Error("Unknown error occurred"));
+      }
     }
   }
 
@@ -53,12 +57,12 @@ const QuizForm = () => {
   );
 };
 
-function submitForm(answer: string) {
+function submitForm(answer: string): Promise<void> {
   // Pretends its hitting the network
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      let shouldError = answer.toLowerCase() !== "lima";
+      const shouldError = answer.toLowerCase() !== "lima";
 
       if (shouldError) {
         reject(new Error("Good geuss but a wrong asnwer. Try again!"));
